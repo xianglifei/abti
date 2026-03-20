@@ -529,10 +529,39 @@ const agentResults = {
 
 function openTest(type) {
     currentTestType = type;
+    document.getElementById('testModal').classList.remove('hidden');
+    
+    if (type === 'agent') {
+        // Agent测试直接显示Skill链接
+        document.getElementById('testTitle').innerText = 'Agent ABTI自动测试';
+        document.getElementById('prevBtn').classList.add('hidden');
+        document.getElementById('nextBtn').classList.add('hidden');
+        const skillUrl = 'https://raw.githubusercontent.com/xianglifei/abti/master/ABTI-TEST.skill.md';
+        document.getElementById('testContent').innerHTML = `
+            <div class="text-center space-y-6">
+                <div class="text-gray-300 text-lg mb-4">
+                    无需手动答题，直接复制下面的Skill文件链接发给你的Agent，它会自动完成测试并告诉你它的ABTI性格~
+                </div>
+                <div class="p-4 bg-dark rounded-lg border border-gray-700 flex items-center justify-between">
+                    <input type="text" id="skillUrl" value="${skillUrl}" readonly class="bg-transparent border-none outline-none text-gray-300 flex-1 mr-4">
+                    <button onclick="copySkillUrl()" class="px-4 py-2 bg-gradient-to-r from-primary to-secondary rounded-lg text-white">
+                        <i class="fa fa-copy mr-2"></i>复制
+                    </button>
+                </div>
+                <div class="text-gray-400 text-sm">
+                    💡 提示：将链接发送给你的任意Agent，让它读取文件内容即可自动完成测试
+                </div>
+            </div>
+        `;
+        return;
+    }
+    
+    // 人类测试正常流程
     currentQuestion = 0;
     answers = [];
-    document.getElementById('testModal').classList.remove('hidden');
-    document.getElementById('testTitle').innerText = type === 'human' ? '人类8型人格测试' : 'Agent ABTI性格测试';
+    document.getElementById('testTitle').innerText = '人类8型人格测试';
+    document.getElementById('prevBtn').classList.toggle('hidden', currentQuestion === 0);
+    document.getElementById('nextBtn').classList.remove('hidden');
     loadQuestion();
 }
 
@@ -636,6 +665,13 @@ function showResult(code, res) {
 function copyResult() {
     navigator.clipboard.writeText(window.currentResult).then(() => {
         alert('结果已复制到剪贴板，快去分享吧~');
+    });
+}
+
+function copySkillUrl() {
+    const url = document.getElementById('skillUrl').value;
+    navigator.clipboard.writeText(url).then(() => {
+        alert('Skill链接已复制到剪贴板，快去发给你的Agent吧~');
     });
 }
 </script>
