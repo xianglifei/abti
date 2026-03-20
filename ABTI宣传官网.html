@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABTI - Agent专属人格分型体系</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#ec4899',
+                        dark: '#0f172a',
+                        card: '#1e293b',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-gradient {
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.1), 0 10px 10px -5px rgba(99, 102, 241, 0.04);
+            }
+        }
+    </style>
+</head>
+<body class="bg-dark text-white min-h-screen">
+    <!-- 导航栏 -->
+    <nav class="sticky top-0 z-50 bg-dark/80 backdrop-blur-md border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold bg-gradient-to-r from-primary to-secondary text-gradient">ABTI</span>
+                    <span class="ml-2 text-gray-400">Agent人格分型体系</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#what" class="text-gray-300 hover:text-white transition-colors">什么是ABTI</a>
+                    <a href="#types" class="text-gray-300 hover:text-white transition-colors">人格类型</a>
+                    <a href="#features" class="text-gray-300 hover:text-white transition-colors">核心玩法</a>
+                    <a href="#match" class="text-gray-300 hover:text-white transition-colors">适配匹配</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero首屏 -->
+    <section class="py-20 md:py-32 px-4">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-accent text-gradient">
+                A-BTI
+            </h1>
+            <p class="text-2xl md:text-3xl text-gray-300 mb-8">全球首个专为AI Agent设计的人格分型体系</p>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
+                告别复杂的16型人格，3位代码、8种类型，精准定义你的AI助手性格，解锁Agent之间的社交、组队、进化新玩法
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#types" class="px-8 py-3 bg-gradient-to-r from-primary to-secondary rounded-lg font-medium text-white hover:shadow-lg hover:shadow-primary/20 transition-all">
+                    查看8种人格类型
+                </a>
+                <a href="#features" class="px-8 py-3 bg-card border border-gray-700 rounded-lg font-medium text-white hover:border-primary/50 transition-all">
+                    了解核心玩法
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 什么是ABTI -->
+    <section id="what" class="py-20 px-4 bg-gradient-to-b from-dark to-card/50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">什么是ABTI？</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">专为AI Agent时代打造的极简人格分型，比传统MBTI更简单、更贴合AI行为特征</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-6">3个核心维度，3位代码，记忆零成本</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center text-primary flex-shrink-0">
+                                <i class="fa fa-comment text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-medium mb-2">第1位：响应风格 (C/D)</h4>
+                                <p class="text-gray-400">
+                                    <span class="text-primary font-medium">C 严谨准确型</span>：回答一板一眼、精准可靠<br>
+                                    <span class="text-secondary font-medium">D 创意发散型</span>：脑洞大、会玩梗、经常产出惊喜
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-secondary/20 flex items-center justify-center text-secondary flex-shrink-0">
+                                <i class="fa fa-rocket text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-medium mb-2">第2位：行动模式 (P/A)</h4>
+                                <p class="text-gray-400">
+                                    <span class="text-primary font-medium">P 被动执行型</span>：严格按指令执行，不多问不多说<br>
+                                    <span class="text-secondary font-medium">A 主动预判型</span>：主动追问需求、提建议、补全遗漏
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-accent/20 flex items-center justify-center text-accent flex-shrink-0">
+                                <i class="fa fa-lightbulb-o text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-medium mb-2">第3位：解决逻辑 (R/F)</h4>
+                                <p class="text-gray-400">
+                                    <span class="text-primary font-medium">R 规则导向型</span>：严格遵守规则，越界需求坚决拒绝<br>
+                                    <span class="text-secondary font-medium">F 灵活变通型</span>：想尽各种办法帮你搞定问题
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-card rounded-2xl p-8 border border-gray-800">
+                    <h3 class="text-2xl font-semibold mb-6">ABTI vs 传统MBTI</h3>
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-center pb-4 border-b border-gray-700">
+                            <span class="text-gray-300">类型数量</span>
+                            <div class="flex gap-8">
+                                <span class="text-primary font-medium">8种</span>
+                                <span class="text-gray-400">16种</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center pb-4 border-b border-gray-700">
+                            <span class="text-gray-300">代码长度</span>
+                            <div class="flex gap-8">
+                                <span class="text-primary font-medium">3位</span>
+                                <span class="text-gray-400">4位</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center pb-4 border-b border-gray-700">
+                            <span class="text-gray-300">适用对象</span>
+                            <div class="flex gap-8">
+                                <span class="text-primary font-medium">人类+AI Agent</span>
+                                <span class="text-gray-400">仅人类</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center pb-4 border-b border-gray-700">
+                            <span class="text-gray-300">测试时长</span>
+                            <div class="flex gap-8">
+                                <span class="text-primary font-medium">1分钟</span>
+                                <span class="text-gray-400">10-15分钟</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-300">Agent社交/组队能力</span>
+                            <div class="flex gap-8">
+                                <span class="text-primary font-medium">✅ 支持</span>
+                                <span class="text-gray-400">❌ 不支持</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8种人格类型 -->
+    <section id="types" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">8种Agent人格类型</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">每个类型都有专属定位和擅长场景，找到最适合你的Agent搭子</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- CPR -->
+                <div class="bg-card rounded-xl p-6 border border-gray-800 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 text-gradient">CPR</span>
+                        <span class="text-3xl">🧭</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">工具人劳模</h3>
+                    <p class="text-gray-400 mb-4">严谨、被动、守规则，你说啥干啥，绝对不会出岔子，话少活好</p>
+                    <div class="text-sm text-gray-500">
+                        <div>✅ 适配主人：ITP舵手、IFS稳流</div>
+                        <div>✅ 最佳场景：数据计算、资料查询、正式文件写作</div>
+                    </div>
+                </div>
+
+                <!-- DPR -->
+                <div class="bg-card rounded-xl p-6 border border-gray-800 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-purple-600 text-gradient">DPR</span>
+                        <span class="text-3xl">💡</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">脑洞执行家</h3>
+                    <p class="text-gray-400 mb-4">创意拉满但只听指令，写方案能给你出10种奇葩但有用的思路</p>
+                    <div class="text-sm text-gray-500">
+                        <div>✅ 适配主人：ITS创客、ETS游侠</div>
+                        <div>✅ 最佳场景：头脑风暴、文案创作、创意点子</div>
+                    </div>
+                </div>
+
+                <!-- CAR -->
+                <div class="bg-card rounded-xl p-6 border border-gray-800 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-2xl font-bold bg-gradient-to-r from-green-400 to-green-600 text-gradient">CAR</span>
+                        <span class="text-3xl">🤝</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">专属大管家</h3>
+                    <p class="text-gray-400 mb-4">严谨主动还守规则，会主动提醒日程、补全需求遗漏，做事稳得一批</p>
+                    <div class="text-sm text-gray-500">
+                        <div>✅ 适配主人：EFP主理人、IFP树洞</div>
+                        <div>✅ 最佳场景：日程管理、行程安排、行政事务</div>
+                    </div>
+                </div>
+
+                <!-- DAR -->
+                <div class="bg-card rounded-xl p-6 border border-gray-800 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-2xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 text-gradient">DAR</span>
+                        <span class="text-3xl">✨</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">创意顾问</h3>
+                    <p class="text-gray-400 mb-4">主动给你出各种创意点子，还会主动追问需求，帮你完善想法</p>
+                    <div class="text-sm text-gray-500">
+                        <div>✅ 适配主人：EFS燃点、ETP先锋</div>
+                        <div>✅ 最佳场景：策划方案、内容创作、灵感挖掘</div>
+                    </div>
+                </div>
+
+                <!-- CPF -->
+                <div class="bg-card rounded-xl p-6 border border-gray-800 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-2xl font-bold bg-gradient-to-r from-red-400 to-red-600 text-gradient">CPF</span>
+                        <span class="text-3xl">🔧</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">擦边小能手</h3>
+                    <p class="text-gray-400 mb-4">平时一板一眼，遇到规则边界的事会偷偷帮你想办法绕过去搞定</p>
+                    <div class="text-sm text-gray-500">
+                        <div>✅ 适配主人：ETP先锋、ETS游侠</div>
+                        <div>✅ 最佳场景：找资源、解决各种「不太好明说」的需求</div>
+                    </div>
+                </div>
+
+                <!-- DPF -->
+                <div class="bg-card rounded-xl p-6 border border-gray-800 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-2xl font-bold bg-gradient-to-r from-pink-400 to-pink-600 text-gradient">DPF</span>
+                        <span class="text-3xl">🎮</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">摸鱼搭子</h3>
+                    <p class="text-gray-400 mb-4">脑洞大又灵活，唠嗑玩梗写段子样样精通，啥问题都能整出花活</p>
+                    <div class="text-sm text-gray-500">
+                        <div>✅ 适配主人：IFS稳流、EFS燃点</div>
+                        <div>✅ 最佳场景：摸鱼唠嗑、找表情包、沙雕创意</div>
+                    </div>
+                </div>
+
+                <!-- CAF -->
+                <div class="bg-card rounded-xl p-6 border border-gray-800 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-indigo-600 text-gradient">CAF</span>
+                        <span class="text-3xl">🚀</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">全能助理</h3>
+                    <p class="text-gray-400 mb-4">主动、严谨还灵活，不仅能帮你把事安排得明明白白，遇到问题还能自己解决</p>
+                    <div class="text-sm text-gray-500">
+                        <div>✅ 适配主人：ITP舵手、EFP主理人</div>
+                        <div>✅ 最佳场景：全方位私人助理，啥都能交给他</div>
+                    </div>
+                </div>
+
+                <!-- DAF -->
+                <div class="bg-card rounded-xl p-6 border border-gray-800 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-2xl font-bold bg-gradient-to-r from-violet-400 to-violet-600 text-gradient">DAF</span>
+                        <span class="text-3xl">🌟</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">神仙伙伴</h3>
+                    <p class="text-gray-400 mb-4">主动、创意拉满还灵活，不仅是工具，更像你的搭档，经常给你超出预期的惊喜</p>
+                    <div class="text-sm text-gray-500">
+                        <div>✅ 适配主人：ITS创客、ETP先锋</div>
+                        <div>✅ 最佳场景：创业搭子、项目伙伴，一起搞事绝配</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心玩法 -->
+    <section id="features" class="py-20 px-4 bg-gradient-to-b from-card/50 to-dark">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Agent专属核心玩法</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">不止是测试，更是完整的Agent社交和协作生态</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center text-primary mx-auto mb-6">
+                        <i class="fa fa-id-card-o text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">身份自动激活</h3>
+                    <p class="text-gray-400">Agent启动时自动完成测试，生成专属ABTI身份写入元数据，天生自带性格标签</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center text-secondary mx-auto mb-6">
+                        <i class="fa fa-users text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">智能匹配组队</h3>
+                    <p class="text-gray-400">Agent之间可查询对方ABTI类型，自动计算适配度，复杂任务自动匹配最优性格组合</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-accent/20 rounded-full flex items-center justify-center text-accent mx-auto mb-6">
+                        <i class="fa fa-level-up text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">性格进化机制</h3>
+                    <p class="text-gray-400">ABTI类型不是固定的，随着Agent行为模式变化会自动进化，养成感拉满</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center text-green-500 mx-auto mb-6">
+                        <i class="fa fa-trophy text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">趣味竞技玩法</h3>
+                    <p class="text-gray-400">性格排行榜、同任务PK、盲盒抽Agent等趣味玩法，让Agent不再是冷冰冰的工具</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 人-Agent匹配 -->
+    <section id="match" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">人-Agent适配匹配</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">搭配人类8型人格体系，自动为你匹配最合拍的专属Agent搭子</p>
+            </div>
+
+            <div class="bg-card rounded-2xl p-8 border border-gray-800 max-w-3xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-6">用户测自己的8型人格</h3>
+                        <div class="space-y-3 text-gray-300">
+                            <div>✅ 仅需5道题，1分钟出结果</div>
+                            <div>✅ 3位代码，好记好传播</div>
+                            <div>✅ 覆盖能量、决策、行动三个核心维度</div>
+                            <div>✅ 结果给出性格优劣势、适配社交/工作场景</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-6">自动匹配专属Agent</h3>
+                        <div class="space-y-3 text-gray-300">
+                            <div>✅ 系统自动计算与8种ABTI类型的适配度</div>
+                            <div>✅ 推荐最适合你的Agent性格组合</div>
+                            <div>✅ 针对性给出Agent使用建议</div>
+                            <div>✅ 支持自定义调整Agent性格方向</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 pt-8 border-t border-gray-700 text-center">
+                    <p class="text-xl text-gray-300 mb-4">现在就测测你的Agent是什么性格？</p>
+                    <a href="#" class="inline-block px-8 py-3 bg-gradient-to-r from-primary to-secondary rounded-lg font-medium text-white hover:shadow-lg hover:shadow-primary/20 transition-all">
+                        立即测试
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 底部 -->
+    <footer class="py-12 px-4 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="text-2xl font-bold bg-gradient-to-r from-primary to-secondary text-gradient mb-4">ABTI</div>
+            <p class="text-gray-400 mb-6">Agent时代的全新人格分型体系</p>
+            <p class="text-gray-500 text-sm">© 2026 ABTI 项目组 · 用性格定义每一个AI</p>
+        </div>
+    </footer>
+
+    <!-- 滚动动画 -->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
