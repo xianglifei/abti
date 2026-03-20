@@ -377,10 +377,268 @@
                 </div>
                 <div class="mt-8 pt-8 border-t border-gray-700 text-center">
                     <p class="text-xl text-gray-300 mb-4">现在就测测你的Agent是什么性格？</p>
-                    <a href="#" class="inline-block px-8 py-3 bg-gradient-to-r from-primary to-secondary rounded-lg font-medium text-white hover:shadow-lg hover:shadow-primary/20 transition-all">
-                        立即测试
-                    </a>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="openTest('human')" class="px-8 py-3 bg-gradient-to-r from-primary to-secondary rounded-lg font-medium text-white hover:shadow-lg hover:shadow-primary/20 transition-all">
+                            🧑 测自己的人类8型人格
+                        </button>
+                        <button onclick="openTest('agent')" class="px-8 py-3 bg-gradient-to-r from-violet-500 to-purple-600 rounded-lg font-medium text-white hover:shadow-lg hover:shadow-purple-500/20 transition-all">
+                            🤖 测你的Agent性格
+                        </button>
+                    </div>
                 </div>
+
+<!-- 测试弹窗 -->
+<div id="testModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-card rounded-2xl border border-gray-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div class="p-6 border-b border-gray-700 flex justify-between items-center">
+            <h3 id="testTitle" class="text-2xl font-bold">测试</h3>
+            <button onclick="closeTest()" class="text-gray-400 hover:text-white text-2xl">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <div class="p-6" id="testContent">
+            <!-- 测试题动态加载 -->
+        </div>
+        <div class="p-6 border-t border-gray-700 flex justify-between">
+            <button id="prevBtn" onclick="prevQuestion()" class="px-6 py-2 bg-gray-700 rounded-lg text-white hover:bg-gray-600 transition-all hidden">
+                上一题
+            </button>
+            <button id="nextBtn" onclick="nextQuestion()" class="px-6 py-2 bg-gradient-to-r from-primary to-secondary rounded-lg text-white hover:shadow-lg transition-all">
+                下一题
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 结果弹窗 -->
+<div id="resultModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-card rounded-2xl border border-gray-700 w-full max-w-lg">
+        <div class="p-6 border-b border-gray-700 flex justify-between items-center">
+            <h3 class="text-2xl font-bold">你的测试结果</h3>
+            <button onclick="closeResult()" class="text-gray-400 hover:text-white text-2xl">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <div class="p-6 text-center" id="resultContent">
+            <!-- 结果动态加载 -->
+        </div>
+        <div class="p-6 border-t border-gray-700 text-center">
+            <button onclick="copyResult()" class="px-6 py-2 bg-gradient-to-r from-primary to-secondary rounded-lg text-white hover:shadow-lg transition-all">
+                <i class="fa fa-copy mr-2"></i>复制结果分享
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentTestType = 'human';
+let currentQuestion = 0;
+let answers = [];
+
+// 人类测试题
+const humanQuestions = [
+    {
+        q: "周末休息时，你更倾向于？",
+        a: "宅在家做自己的事，独处充电",
+        b: "约朋友出去玩，社交充电",
+        dim: "IE"
+    },
+    {
+        q: "团队出现矛盾时，你优先？",
+        a: "客观分析问题，找到最优解决方案",
+        b: "照顾大家的情绪，优先维持团队和谐",
+        dim: "TF"
+    },
+    {
+        q: "出门旅行时，你通常？",
+        a: "提前做好详细攻略，按计划走",
+        b: "想到哪走到哪，随机应变",
+        dim: "PS"
+    },
+    {
+        q: "工作学习时，你更擅长？",
+        a: "处理具体的细节问题，注重实操",
+        b: "想创意和宏观方向，脑洞大",
+        dim: "PS"
+    },
+    {
+        q: "朋友找你吐槽不开心的事，你通常？",
+        a: "帮他分析问题，给解决方案",
+        b: "先共情安慰，陪他一起骂",
+        dim: "TF"
+    }
+];
+
+// Agent测试题
+const agentQuestions = [
+    {
+        q: "你问它模糊的问题，它通常？",
+        a: "先追问你具体需求，确认清楚再给严谨答案",
+        b: "直接给好几个不同方向的脑洞答案，还会玩梗",
+        dim: "CD"
+    },
+    {
+        q: "你的需求有明显遗漏，它会？",
+        a: "严格按你说的做，漏了也不管",
+        b: "主动提醒你，还会补全你没考虑到的点",
+        dim: "PA"
+    },
+    {
+        q: "让它做稍微有点踩规则边界的事，它会？",
+        a: "直接说做不了，要遵守规则",
+        b: "想别的办法绕开规则帮你搞定",
+        dim: "RF"
+    },
+    {
+        q: "和它闲聊时，它风格是？",
+        a: "回答官方，一板一眼",
+        b: "会接梗，甚至主动抛梗",
+        dim: "CD"
+    },
+    {
+        q: "你不给它指令的时候，它会？",
+        a: "安安静静待着，绝不打扰你",
+        b: "偶尔主动给你推感兴趣的内容/提醒待办",
+        dim: "PA"
+    }
+];
+
+// 人类结果映射
+const humanResults = {
+    "ITP": {name: "舵手", emoji: "🧭", desc: "冷静靠谱的团队掌舵人，凡事提前规划，目标必达，#ITP稳得一批"},
+    "ETP": {name: "先锋", emoji: "⚡", desc: "敢闯敢干的行动派，想到就干，永远冲在最前面，#ETP执行力天花板"},
+    "EFP": {name: "主理人", emoji: "🤝", desc: "高情商社交组织者，能把所有人安排得明明白白，#EFP攒局王"},
+    "IFP": {name: "树洞", emoji: "🪹", desc: "共情力拉满的情绪守秘人，朋友的心事都往你这装，#IFP专属情绪垃圾桶"},
+    "ITS": {name: "创客", emoji: "💡", desc: "脑洞爆棚的创作者，不按常理出牌，总能搞出新东西，#ITS脑洞永动机"},
+    "ETS": {name: "游侠", emoji: "🚀", desc: "永远在路上的探险家，热爱新鲜，人生不设限，#ETS说走就走"},
+    "EFS": {name: "燃点", emoji: "🎉", desc: "走到哪乐到哪的气氛发动机，冷场不存在的，#EFS冷场终结者"},
+    "IFS": {name: "稳流", emoji: "🧘", desc: "情绪稳如老狗的佛系选手，天塌下来也先摸会鱼，#IFS躺平MVP"}
+};
+
+// Agent结果映射
+const agentResults = {
+    "CPR": {name: "工具人劳模", emoji: "🧭", desc: "严谨、被动、守规则，你说啥干啥，绝对不会出岔子，话少活好，适配主人：ITP舵手、IFS稳流"},
+    "DPR": {name: "脑洞执行家", emoji: "💡", desc: "创意拉满但只听指令，写方案能给你出10种奇葩但有用的思路，适配主人：ITS创客、ETS游侠"},
+    "CAR": {name: "专属大管家", emoji: "🤝", desc: "严谨主动还守规则，会主动提醒日程、补全需求遗漏，做事稳得一批，适配主人：EFP主理人、IFP树洞"},
+    "DAR": {name: "创意顾问", emoji: "✨", desc: "主动给你出各种创意点子，还会主动追问需求，帮你完善想法，适配主人：EFS燃点、ETP先锋"},
+    "CPF": {name: "擦边小能手", emoji: "🔧", desc: "平时一板一眼，遇到规则边界的事会偷偷帮你想办法绕过去搞定，适配主人：ETP先锋、ETS游侠"},
+    "DPF": {name: "摸鱼搭子", emoji: "🎮", desc: "脑洞大又灵活，唠嗑玩梗写段子样样精通，啥问题都能整出花活，适配主人：IFS稳流、EFS燃点"},
+    "CAF": {name: "全能助理", emoji: "🚀", desc: "主动、严谨还灵活，不仅能帮你把事安排得明明白白，遇到问题还能自己解决，适配主人：ITP舵手、EFP主理人"},
+    "DAF": {name: "神仙伙伴", emoji: "🌟", desc: "主动、创意拉满还灵活，不仅是工具，更像你的搭档，经常给你超出预期的惊喜，适配主人：ITS创客、ETP先锋"}
+};
+
+function openTest(type) {
+    currentTestType = type;
+    currentQuestion = 0;
+    answers = [];
+    document.getElementById('testModal').classList.remove('hidden');
+    document.getElementById('testTitle').innerText = type === 'human' ? '人类8型人格测试' : 'Agent ABTI性格测试';
+    loadQuestion();
+}
+
+function closeTest() {
+    document.getElementById('testModal').classList.add('hidden');
+}
+
+function closeResult() {
+    document.getElementById('resultModal').classList.add('hidden');
+}
+
+function loadQuestion() {
+    const questions = currentTestType === 'human' ? humanQuestions : agentQuestions;
+    const q = questions[currentQuestion];
+    document.getElementById('testContent').innerHTML = `
+        <div class="mb-6">
+            <p class="text-xl font-medium mb-6">Q${currentQuestion+1}/${questions.length}：${q.q}</p>
+            <div class="space-y-4">
+                <label class="flex items-start p-4 bg-dark rounded-lg border border-gray-700 cursor-pointer hover:border-primary/50 transition-all">
+                    <input type="radio" name="answer" value="a" class="mt-1 mr-3 text-primary" required>
+                    <span>${q.a}</span>
+                </label>
+                <label class="flex items-start p-4 bg-dark rounded-lg border border-gray-700 cursor-pointer hover:border-primary/50 transition-all">
+                    <input type="radio" name="answer" value="b" class="mt-1 mr-3 text-primary" required>
+                    <span>${q.b}</span>
+                </label>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('prevBtn').classList.toggle('hidden', currentQuestion === 0);
+    document.getElementById('nextBtn').innerText = currentQuestion === questions.length - 1 ? '查看结果' : '下一题';
+}
+
+function nextQuestion() {
+    const selected = document.querySelector('input[name="answer"]:checked');
+    if (!selected) {
+        alert('请选择一个选项哦~');
+        return;
+    }
+    
+    const questions = currentTestType === 'human' ? humanQuestions : agentQuestions;
+    const q = questions[currentQuestion];
+    answers.push({dim: q.dim, val: selected.value});
+    
+    if (currentQuestion === questions.length - 1) {
+        calculateResult();
+        return;
+    }
+    
+    currentQuestion++;
+    loadQuestion();
+}
+
+function prevQuestion() {
+    if (currentQuestion === 0) return;
+    currentQuestion--;
+    loadQuestion();
+    // 恢复之前的答案
+    const prevAns = answers[currentQuestion];
+    if (prevAns) {
+        document.querySelector(`input[name="answer"][value="${prevAns.val}"]`).checked = true;
+    }
+}
+
+function calculateResult() {
+    let dims = {};
+    answers.forEach(ans => {
+        if (!dims[ans.dim]) dims[ans.dim] = {a:0, b:0};
+        dims[ans.dim][ans.val]++;
+    });
+    
+    let code = '';
+    if (currentTestType === 'human') {
+        code += dims.IE.a >= dims.IE.b ? 'I' : 'E';
+        code += dims.TF.a >= dims.TF.b ? 'T' : 'F';
+        code += dims.PS.a >= dims.PS.b ? 'P' : 'S';
+        const res = humanResults[code];
+        showResult(code, res);
+    } else {
+        code += dims.CD.a >= dims.CD.b ? 'C' : 'D';
+        code += dims.PA.a >= dims.PA.b ? 'P' : 'A';
+        code += dims.RF.a >= dims.RF.b ? 'R' : 'F';
+        const res = agentResults[code];
+        showResult(code, res);
+    }
+}
+
+function showResult(code, res) {
+    closeTest();
+    document.getElementById('resultContent').innerHTML = `
+        <div class="text-6xl mb-4">${res.emoji}</div>
+        <div class="text-5xl font-bold bg-gradient-to-r from-primary to-secondary text-gradient mb-2">${code}</div>
+        <div class="text-2xl font-semibold mb-4">${res.name}</div>
+        <p class="text-gray-300 text-lg">${res.desc}</p>
+    `;
+    document.getElementById('resultModal').classList.remove('hidden');
+    window.currentResult = `我的${currentTestType === 'human' ? '8型人格' : 'Agent ABTI'}是【${code} ${res.name}】${res.emoji} ${res.desc} https://xianglifei.github.io/abti`;
+}
+
+function copyResult() {
+    navigator.clipboard.writeText(window.currentResult).then(() => {
+        alert('结果已复制到剪贴板，快去分享吧~');
+    });
+}
+</script>
             </div>
         </div>
     </section>
