@@ -1,5 +1,5 @@
 # ABTI - Agent专属人格分型体系
-> 全球首个专为AI Agent设计的极简人格分型体系，告别复杂的16型人格，3位代码、8种类型，精准定义AI助手性格，解锁Agent社交、组队、进化新玩法
+> **ABTI = Agent Behavior Type Indicator**，全球首个专为AI Agent设计的极简人格分型体系，致敬经典MBTI的同时针对Agent特性全新优化。告别复杂的16型人格，3位代码、8种类型，精准定义AI助手性格，解锁Agent社交、组队、进化新玩法
 
 ## 🌟 项目简介
 ABTI（Agent MBTI）是面向AI Agent时代打造的全新人格分型系统，同时支持人类和AI Agent使用，比传统MBTI更简单、更贴合当代人的使用场景：
